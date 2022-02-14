@@ -23,10 +23,9 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["MY TASKS", "PROJECTS", "TEAM"];
-const settings = ["Profile", "Logout"];
+const pages = ["Gantt", "List", "Board", "Files", "Discussion","Dashboard"];
 
-const Header = () => {
+const ProjectHeader = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const dispatch = useDispatch();
@@ -71,10 +70,9 @@ const Header = () => {
   };
 
   return (
-    <AppBar sx={{ bgcolor: "white" }} position="fixed">
+    <AppBar sx={{ bgcolor: "white", marginTop: "5.5rem" }} position="fixed">
       <Container maxWidth="false">
         <Toolbar disableGutters>
-          <img src="./size2GIZA.png" />
           <Typography
             variant="h6"
             noWrap
@@ -114,7 +112,7 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem  key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -128,50 +126,21 @@ const Header = () => {
           >
             LOGO
           </Typography> */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }}}>
+            <Typography sx={{color: "black",my:2.5,fontSize:"1.5rem"}} >Project</Typography>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, color: "white", display: "block",backgroundColor: "#0F2C67",marginLeft:"2.5rem"}}
               >
                 {page}
               </Button>
             ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
-export default Header;
+export default ProjectHeader;

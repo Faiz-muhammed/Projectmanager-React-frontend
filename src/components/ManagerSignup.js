@@ -140,6 +140,7 @@ function ManagerSignup() {
             xs={12}
             md={6}
             order={{ xs: 2, md: 1 }}
+           
           >
             <Paper
               style={{ height: "35rem", width: "30rem", borderRadius: "15px" }}
@@ -202,7 +203,9 @@ function ManagerSignup() {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
+          <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}  sx={{
+              display: { xs: "none", md: "block" },
+            }}>
             <img
               className={classes.scrumImage}
               src="./undraw_scrum_board_re_wk7v.svg"

@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 import Axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
 
 const useStyles = makeStyles({
   wrap: {
@@ -60,7 +61,6 @@ function ManagerLogin() {
   const classes = useStyles();
   const navigate = useNavigate();
   const initialValue = { email: "", password: "" };
-
   const [formValues, setFormValues] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -70,10 +70,40 @@ function ManagerLogin() {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const handleLogin = async (response) => {
+    console.log(response.profileObj.email);
+    if (response) {
+      try {
+        let userGoogleData = response.profileObj;
+        await Axios.post(
+          "http://localhost:3001/api/manager/GoogleLogin",
+          userGoogleData
+        ).then((res) => {
+          console.log("yes", res.data.accessToken);
+          if (res.data.accessToken) {
+            localStorage.setItem("token", res.data.accessToken);
+            navigate("/");
+          }
+        });
+      } catch (err) {
+        console.log("error");
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    if (Object.keys(formErrors).length === 0) {
+     setFormErrors(validate(formValues));
+    
+    // if (Object.keys(formErrors).length === 0) {
+     
+      setIsSubmit(true);
+    
+  };
+
+  useEffect(async() => {
+    console.log(formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
       try {
         const LoginData = {
           ProjectmanagerEmail: formValues.email,
@@ -93,14 +123,6 @@ function ManagerLogin() {
       } catch (err) {
         console.error(err);
       }
-      setIsSubmit(true);
-    }
-  };
-
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
     }
   }, [formErrors]);
 
@@ -131,6 +153,13 @@ function ManagerLogin() {
         <Grid style={{ marginTop: "2rem" }} className={classes.formGrid}>
           <img className={classes.logo} src="./gizalogo.png" />
           <h2></h2>
+          <GoogleLogin
+            clientId="882099538447-526ufc3dsolfklb0egb6fobbovbu6pc4.apps.googleusercontent.com"
+            buttonText="Log in with Google"
+            onSuccess={handleLogin}
+            onFailure={handleLogin}
+            cookiePolicy={"single_host_origin"}
+          />
           <hr />
           <form onSubmit={handleSubmit}>
             <TextField
